@@ -1,0 +1,3 @@
+postfix postfix/main_mailer_type select Satellite system
+postfix postfix/mailname string {{ host_name }}
+postfix postfix/relayhost string {{ relay_host }}

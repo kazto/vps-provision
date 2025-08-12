@@ -1,0 +1,24 @@
+[DEFAULT]
+# ファイアーウォールでブロックしないIPアドレス
+ignoreip = 127.0.0.1/8 192.168.0.0/24 100.0.0.0/8
+
+# ファイアーウォールでブロックする時間（秒）
+bantime = 3600
+
+# ファイアーウォールでブロックする前に許容する失敗回数の期間（秒）
+findtime = 600
+
+# ファイアーウォールでブロックする前に許容する失敗回数
+maxretry = 3
+
+[sshd]
+# sshdのfail2banを有効化する
+enabled = true
+
+# sshdのログファイル
+logpath = /var/log/auth.log
+
+[recidive]
+enabled = true
+bantime = 2419200
+
