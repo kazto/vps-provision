@@ -31,7 +31,7 @@ newlines = [
 ]
 
 result = lines.map do |line|
-  line.then {|v| set_relayhost_value(v, "[smtp.mailgun.org]:587") }
+  line.then {|v| set_relayhost_value(v, "[email-smtp.us-east-1.amazonaws.com]:587") }
 end.then {|v|
   add_or_override_newlines(v, newlines)
 }

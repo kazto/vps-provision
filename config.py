@@ -28,10 +28,11 @@ def load_secrets():
     
     # Override with environment variables
     secret_keys = [
-        "MAILGUN_ACCOUNT",
-        "MAILGUN_API_KEY", 
+        "AWS_SES_REGION",
+        "AWS_SES_USERNAME",
+        "AWS_SES_PASSWORD", 
         "HOST_NAME",
-        "RELAY_HOST",
+        "SES_RELAY_HOST",
         "LOGWATCH_MAILTO",
         "LOGWATCH_MAILFROM",
         "CRONAPT_MAILTO",
@@ -60,11 +61,12 @@ def get_host_data():
     
     return {
         "kazto.net": {
-            # Mail configuration
-            "mailgun_account": secrets.get("MAILGUN_ACCOUNT", ""),
-            "mailgun_api_key": secrets.get("MAILGUN_API_KEY", ""),
+            # Mail configuration - AWS SES
+            "aws_ses_region": secrets.get("AWS_SES_REGION", "us-east-1"),
+            "aws_ses_username": secrets.get("AWS_SES_USERNAME", ""),
+            "aws_ses_password": secrets.get("AWS_SES_PASSWORD", ""),
             "host_name": secrets.get("HOST_NAME", "kazto.net"),
-            "relay_host": secrets.get("RELAY_HOST", ""), 
+            "ses_relay_host": secrets.get("SES_RELAY_HOST", ""), 
             "logwatch_mailto": secrets.get("LOGWATCH_MAILTO", ""),
             "logwatch_mailfrom": secrets.get("LOGWATCH_MAILFROM", ""),
             "cronapt_mailto": secrets.get("CRONAPT_MAILTO", ""),

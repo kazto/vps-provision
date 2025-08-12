@@ -16,8 +16,16 @@ cp .env.sample .env
 ```
 
 2. `.env` ファイルに実際の値を記入
+   - AWS SES の SMTP 認証情報を設定
+   - メール送信先アドレスを設定
 
-3. デプロイ実行
+3. AWS SES の設定
+   - AWS Console で SES サービスに移動
+   - SMTP 認証情報を作成
+   - 送信元メールアドレスを認証
+   - 必要に応じて Sandbox モードから本番モードに移行
+
+4. デプロイ実行
 ```bash
 # ドライラン
 pyinfra inventory.py deploy.py --dry
@@ -50,6 +58,7 @@ pyinfra inventory.py deploy.py
 - **vault → .env**: Ansible vault の代わりに環境変数で秘密情報を管理
 - **playbook → deploy.py**: プレイブックがPythonスクリプトに
 - **inventory → inventory.py**: インベントリもPythonで動的生成可能
+- **Mailgun → AWS SES**: メール送信をMailgunからAWS SESに変更
 
 ## 機能
 

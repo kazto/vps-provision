@@ -28,9 +28,10 @@ apt.packages(
 )
 
 # Get configuration from host data
-mailgun_account = host.data.get("mailgun_account", "")
-mailgun_api_key = host.data.get("mailgun_api_key", "")
-relay_host = host.data.get("relay_host", "")
+aws_ses_region = host.data.get("aws_ses_region", "us-east-1")
+aws_ses_username = host.data.get("aws_ses_username", "")
+aws_ses_password = host.data.get("aws_ses_password", "")
+ses_relay_host = host.data.get("ses_relay_host", f"email-smtp.{aws_ses_region}.amazonaws.com")
 
 # Setup SASL password file
 files.template(
@@ -40,8 +41,9 @@ files.template(
     user="root",
     group="root", 
     mode="600",
-    mailgun_account=mailgun_account,
-    mailgun_api_key=mailgun_api_key,
+    ses_relay_host=ses_relay_host,
+    aws_ses_username=aws_ses_username,
+    aws_ses_password=aws_ses_password,
 )
 
 # Encode password file

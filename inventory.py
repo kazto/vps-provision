@@ -10,11 +10,12 @@ mastodon_hosts = ["kazto.net"]
 # Host data - equivalent to Ansible vault variables
 host_data = {
     "kazto.net": {
-        # Mail configuration
-        "mailgun_account": "",
-        "mailgun_api_key": "",
+        # Mail configuration - AWS SES
+        "aws_ses_region": "us-east-1",
+        "aws_ses_username": "",
+        "aws_ses_password": "",
         "host_name": "kazto.net",
-        "relay_host": "",
+        "ses_relay_host": "",
         "logwatch_mailto": "",
         "logwatch_mailfrom": "",
         "cronapt_mailto": "",
