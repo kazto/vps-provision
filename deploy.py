@@ -13,6 +13,7 @@ from tasks import base, fail2ban, logwatch, postfix, docker, cronapt
 # Global configuration
 config.SUDO = True
 config.USE_SUDO_LOGIN = True
+config.SUDO_USER = "root"
 
 # Basic server setup - equivalent to setup.yml
 def setup_basic_server():
@@ -25,6 +26,7 @@ def setup_basic_server():
         present=True,
         home="/home/kazto",
         shell="/bin/bash",
+        _sudo=True,
     )
     
     # Disable root SSH login
@@ -33,6 +35,7 @@ def setup_basic_server():
         path="/etc/ssh/sshd_config",
         line="PermitRootLogin no",
         replace="^PermitRootLogin.*",
+        _sudo=True,
     )
     
     # Restart SSH service
@@ -40,6 +43,7 @@ def setup_basic_server():
         name="Restart SSH service",
         service="ssh",
         restarted=True,
+        _sudo=True,
     )
 
 # Common tasks deployment - equivalent to role-common
@@ -64,6 +68,7 @@ def deploy_mastodon():
         group="mastodon",
         gid=991,
         present=True,
+        _sudo=True,
     )
     
     server.user(
@@ -76,6 +81,7 @@ def deploy_mastodon():
         shell="/usr/sbin/nologin",
         create_home=True,
         present=True,
+        _sudo=True,
     )
     
     # Clone Mastodon repository
@@ -85,10 +91,11 @@ def deploy_mastodon():
             "git clone https://github.com/mastodon/mastodon.git /opt/mastodon/live",
             "chown -R mastodon:mastodon /opt/mastodon/live"
         ],
+        _sudo=True,
     )
 
 if __name__ == "__main__":
     # Execute deployment phases
     setup_basic_server()
     deploy_common() 
-    deploy_mastodon()
+    # deploy_mastodon()

@@ -1,4 +1,14 @@
-from pyinfra import apt
+from pyinfra.operations import apt
+
+apt.update(
+    name="Update apt",
+    _sudo=True,
+)
+
+apt.upgrade(
+    name="Upgrade apt",
+    _sudo=True,
+)
 
 apt.packages(
     name="install base packages",

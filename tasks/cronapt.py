@@ -11,6 +11,7 @@ apt.packages(
     name="Install cron-apt and ruby",
     packages=["cron-apt", "ruby"],
     present=True,
+    _sudo=True,
 )
 
 # Copy configuration modification script
@@ -19,6 +20,7 @@ files.put(
     src="tasks/tmpl/etc/cron-apt/modify-cronapt.rb",
     dest="/etc/cron-apt/modify-cronapt.rb",
     mode="755",
+    _sudo=True,
 )
 
 # Get configuration from host data
@@ -30,6 +32,7 @@ server.shell(
     commands=[
         f"cd /etc/cron-apt && ruby modify-cronapt.rb config {cronapt_mailto} > config.tmp && mv config.tmp config"
     ],
+    _sudo=True,
 )
 
 # Cleanup modification script
@@ -37,4 +40,5 @@ files.file(
     name="Remove modification script",
     path="/etc/cron-apt/modify-cronapt.rb",
     present=False,
+    _sudo=True,
 )

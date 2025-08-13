@@ -10,6 +10,7 @@ apt.packages(
     name="Install fail2ban and ruby",
     packages=["fail2ban", "ruby"],
     present=True,
+    _sudo=True,
 )
 
 # Copy jail.local configuration file
@@ -20,6 +21,7 @@ files.put(
     user="root",
     group="root",
     mode="644",
+    _sudo=True,
 )
 
 # Restart fail2ban service
@@ -28,4 +30,5 @@ systemd.service(
     service="fail2ban",
     restarted=True,
     enabled=True,
+    _sudo=True,
 )

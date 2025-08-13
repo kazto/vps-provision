@@ -12,12 +12,14 @@ files.put(
     src="tasks/tmpl/tmp/debconf-set-selections.tmp",
     dest="/tmp/debconf-set-selections.tmp",
     mode="644",
+    _sudo=True,
 )
 
 # Apply debconf selections
 server.shell(
     name="Apply debconf selections",
     commands=["debconf-set-selections /tmp/debconf-set-selections.tmp"],
+    _sudo=True,
 )
 
 # Install postfix and related packages
@@ -25,6 +27,7 @@ apt.packages(
     name="Install postfix packages",
     packages=["postfix", "libsasl2-modules", "mailutils", "ruby"],
     present=True,
+    _sudo=True,
 )
 
 # Get configuration from host data
@@ -32,6 +35,8 @@ aws_ses_region = host.data.get("aws_ses_region", "us-east-1")
 aws_ses_username = host.data.get("aws_ses_username", "")
 aws_ses_password = host.data.get("aws_ses_password", "")
 ses_relay_host = host.data.get("ses_relay_host", f"email-smtp.{aws_ses_region}.amazonaws.com")
+
+print(aws_ses_username)
 
 # Setup SASL password file
 files.template(
@@ -44,12 +49,14 @@ files.template(
     ses_relay_host=ses_relay_host,
     aws_ses_username=aws_ses_username,
     aws_ses_password=aws_ses_password,
+    _sudo=True,
 )
 
 # Encode password file
 server.shell(
     name="Encode SASL password file",
     commands=["postmap /etc/postfix/sasl_passwd"],
+    _sudo=True,
 )
 
 # Copy main.cf modification script
@@ -58,6 +65,7 @@ files.put(
     src="tasks/tmpl/etc/postfix/modify-maincf.rb",
     dest="/etc/postfix/modify-maincf.rb",
     mode="755",
+    _sudo=True,
 )
 
 # Modify main.cf configuration
@@ -66,6 +74,7 @@ server.shell(
     commands=[
         "cd /etc/postfix && ruby modify-maincf.rb main.cf > main.cf.tmp && mv main.cf.tmp main.cf"
     ],
+    _sudo=True,
 )
 
 # Cleanup modification script
@@ -73,6 +82,7 @@ files.file(
     name="Remove modification script",
     path="/etc/postfix/modify-maincf.rb",
     present=False,
+    _sudo=True,
 )
 
 # Restart postfix service
@@ -81,4 +91,5 @@ systemd.service(
     service="postfix",
     restarted=True,
     enabled=True,
+    _sudo=True,
 )

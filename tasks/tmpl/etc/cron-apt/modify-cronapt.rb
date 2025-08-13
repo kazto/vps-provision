@@ -25,9 +25,12 @@ end
 
 # modify value
 configs.keys.each do |key|
+  value = configs[key]
+  next if value.nil? || value.empty?
+  
   lines.map! do |line|
     if /^#{key}/ =~ line
-      line + configs[key]
+      line + value
     else
       line 
     end

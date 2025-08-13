@@ -17,6 +17,7 @@ end
 
 def set_value_if_match_line(line, reg, value)
   return line unless /^#{reg}/ =~ line
+  return line if value.nil? || value.empty?
 
   line.gsub(/\s*=.*$/, " = ") + value
 end

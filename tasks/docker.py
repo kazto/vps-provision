@@ -10,6 +10,7 @@ apt.packages(
     name="Install Docker",
     packages=["docker.io"],
     present=True,
+    _sudo=True,
 )
 
 # Enable and start Docker service
@@ -18,4 +19,5 @@ systemd.service(
     service="docker",
     enabled=True,
     running=True,
+    _sudo=True,
 )
