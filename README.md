@@ -60,6 +60,37 @@ pyinfra inventory.py deploy.py
 - **inventory → inventory.py**: インベントリもPythonで動的生成可能
 - **Mailgun → AWS SES**: メール送信をMailgunからAWS SESに変更
 
+## テスト実行
+
+テストは testinfra を使用して実行します。
+
+```bash
+# testinfra のインストール
+pip install testinfra
+
+# すべてのテストを実行
+pytest tests/
+
+# 特定のテストファイルのみ実行
+pytest tests/test_docker.py
+
+# リモートホストでテストを実行
+pytest --hosts=ssh://user@hostname tests/
+```
+
+### テストファイル構成
+
+```
+tests/
+├── test_base_packages.py  # 基本パッケージのテスト
+├── test_docker.py         # Dockerのテスト
+├── test_fail2ban.py       # fail2banのテスト
+├── test_postfix.py        # postfixのテスト
+├── test_cronapt.py        # cron-aptのテスト
+├── test_logwatch.py       # logwatchのテスト
+└── test_services.py       # サービス状態のテスト
+```
+
 ## 機能
 
 * ユーザ作成・管理

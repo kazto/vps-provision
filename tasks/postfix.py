@@ -3,8 +3,8 @@ postfix mail server configuration
 Equivalent to ansible role-common/tasks/postfix.yml
 """
 
-from pyinfra.operations import apt, files, server, systemd
-from pyinfra import host
+from pyinfra.operations import apt, files, server, systemd, python
+from pyinfra import host, logger
 
 # Copy debconf preselection file
 files.put(
@@ -31,12 +31,10 @@ apt.packages(
 )
 
 # Get configuration from host data
-aws_ses_region = host.data.get("aws_ses_region", "us-east-1")
-aws_ses_username = host.data.get("aws_ses_username", "")
-aws_ses_password = host.data.get("aws_ses_password", "")
-ses_relay_host = host.data.get("ses_relay_host", f"email-smtp.{aws_ses_region}.amazonaws.com")
-
-print(aws_ses_username)
+aws_ses_region = host.data.get("aws_ses_region")
+aws_ses_username = host.data.get("aws_ses_username")
+aws_ses_password = host.data.get("aws_ses_password")
+ses_relay_host = host.data.get("ses_relay_host")
 
 # Setup SASL password file
 files.template(
@@ -51,6 +49,22 @@ files.template(
     aws_ses_password=aws_ses_password,
     _sudo=True,
 )
+
+### debug #############################################
+# result = server.shell(
+#     commands=["cat /etc/postfix/sasl_passwd"],
+#     _sudo=True,
+# )
+
+# def callback():
+#     logger.info(f"=== sasl_passwd ===\n{result.stdout}")
+
+# python.call(
+#     name="Check sasl_passwd",
+#     function=callback,
+#     _sudo=True,
+# )
+### debug #############################################
 
 # Encode password file
 server.shell(
